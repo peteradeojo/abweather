@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<title>ABWeather App</title>
+	<link rel="shortcut icon" href="./assets/favicon.ico" type="image/x-icon">
+	<!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comfortaa"> -->
+	<link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+	<main>
+		
+		<section>
+			<header>
+				<div>
+					<h1>ABWeather</h1>
+				</div>
+			</header>
+		</section>
+
+		<section id="weather-search-panel">
+			<div class="container">
+				<form onsubmit="searchWeather(); return false;">
+					<input type="text" id="searchBox">
+					<button type="button" onclick="searchWeather()">Search</button>
+				</form>
+			</div>
+		</section>
+
+		<section id="weather-display-panel" style="display: none;margin-top: 40px;margin-bottom: 40px">
+			<div id="main-display-pane" class="container"></div>
+			<div id="advanced-display" class="container"></div>
+		</section>
+	</main>
+	<script>
+		if ('serviceWorker' in navigator) {
+			window.addEventListener('load', async () => {
+				try {
+					const registration = await navigator.serviceWorker.register('index.sw.js');
+					console.log('SW registration sucessful');
+					console.log(`Registered from: ${registration.scope}`);
+				} catch (e) {
+					console.log('SW Registration failed');
+					console.error(e);
+				}
+			});
+		}
+	</script>
+	<script src="./assets/index.js"></script>
+</body>
+</html>

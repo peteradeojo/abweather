@@ -1,0 +1,82 @@
+*{
+	margin: 0;
+	padding: 0;
+	font-family: Comfortaa, sans-serif;
+	box-sizing: border-box;
+}
+
+body{
+	background: lightblue url("./assets/background.jpg") no-repeat;
+	background-size: cover;
+	font-size: 14px;
+}
+.container{
+	padding: 16px;
+	margin: auto;
+	overflow: hidden;
+	width: 90%;
+}
+.jumbo{
+	font-size: 3em;
+}
+.large{
+	font-size: 2.4em;
+}
+.capitalize{
+	text-transform: capitalize;
+}
+header{
+	padding: 40px;
+	background: #000;
+	color: #fff;
+	font-size: 2em;
+}
+
+#weather-search-panel > div{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+#weather-search-panel > div > form {
+	width: 100%;
+	display: flex;
+}
+#weather-search-panel input, #weather-search-panel button{
+	padding: 8px 12px;
+	border: 0;
+}
+#weather-search-panel > div > form input{
+	border-radius: 6px 0 0 6px;
+	width: 70%;
+}
+#weather-search-panel > div > form button {
+	border-radius: 0 6px 6px 0;
+	width: 30%;
+}
+#weather-search-panel > div > form button:hover{
+	background: rgba(0, 0, 0, 0.3);
+	color: #fff;
+}
+#main-display-pane{
+	background: #fff;
+	border-radius: 6px;
+	text-align: center;
+	margin-bottom: 30px;
+}
+#main-display-pane p{
+	margin-bottom: 10px;
+}
+#advanced-display{
+	background: rgba(0, 0, 0, 0.3);
+}
+#advanced-display p{
+	padding: 8px 12px;
+	border-bottom: 0.3px solid #ccc;
+	width: 100%;
+	color: #fff;
+}
+@media (min-width: 578px) {
+	#weather-display-panel > div {
+		width: 70%;
+	}
+}
