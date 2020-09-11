@@ -1,4 +1,5 @@
 const CACHE_NAME = "ABWEATHER-V2";
+const version = "abweather-v2";
 
 const urlsToCache = [
 	'/',
@@ -68,4 +69,30 @@ self.addEventListener('activate', activator => {
 	};
 
 	activator.waitUntil(done());
+});
+
+self.registration.showNotification('Weather in your Location', {
+	body: "Get the weather in your location right now!",
+	image: "/assets/background.jpg",
+	icon: "/android-chrome-192x192.png",
+	badge: "/android-chrome-192x192.png",
+	actions: [
+		{action: "view", title: "View", icon: '/favicon-32x32.png'}
+	]
+});
+
+self.addEventListener('notificationclose', evt => {
+	console.log('notification closed');
+});
+
+self.addEventListener('notificationclick', evt => {
+	evt.notification.close();
+	
+	switch (evt.action) {
+		case 'view':
+			console.log('view clicked');
+			break;
+		default:
+			console.log('notification clicked');
+	}
 });

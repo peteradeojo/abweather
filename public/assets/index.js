@@ -21,10 +21,10 @@ const jsUcfirst = (string) => {
 }
 
 const getTime = (hour, minute) => {
-	let meridian = "AM";
-	if (hour > 11) {
+	let meridian = hour > 11 ? "PM": "AM";
+
+	if (hour > 12) {
 		hour = hour % 12;
-		meridian = "PM"
 	};
 	if (hour < 10) {
 		hour = `0${hour}`;
@@ -33,7 +33,7 @@ const getTime = (hour, minute) => {
 		minute = `0${hour}`;
 	}
 
-	return `${hour}:${minute} ${meridian}`;
+	return `${hour}:${minute}${meridian}`;
 }
 const parseMonth = (n) => {
 	let month = "";
@@ -68,7 +68,7 @@ let searchWeather = () => {
 
 let queryWeatherMap = async (callback, search) => {
 	try {
-		const response = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${search}&appid=${appid}&units=metric`);		
+		const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${search}&appid=${appid}&units=metric`);		
 		const clone = response.clone();
 		const json = await response.json();
 
@@ -83,18 +83,13 @@ let queryWeatherMap = async (callback, search) => {
 let autoLoadWeather = () => {
 	if (navigator.geolocation) {
 		navigator.geolocation.getCurrentPosition(async (pos) => {
-
-			try {
-				const response = await fetch(`http://api.openweathermap.org/data/2.5/weather?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&appid=${appid}&units=metric`);
+			const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&appid=${appid}&units=metric`);
 			const clone = response.clone();
 			const json = await response.json();
 
 			const cache = await caches.open(version);
 			cache.put(clone.url, clone);
 			processResponse(json, clone.url);
-		} catch (e) {
-			alert('You must be offline. Please go online to get real time weather');
-		}
 		});
 	}
 };
@@ -109,34 +104,17 @@ let processResponse = async (json, url) => {
 	const time = getTime(date.getHours(), date.getMinutes());
 	
 	try {
-		const {weather, main, name, sys, coord, clouds, visibility} = json;
+		const {weather, main, name, sys, visibility} = json;
 		const {country} = sys;
 		const main_weather = weather[0].main;
 		const icon = weather[0].icon;
 		const description = weather[0].description;
-		const {temp, humidity, pressure, temp_max, feels_like} = main;
-		const iconurl = `http://openweathermap.org/img/w/${icon}.png`;
+		const {temp, humidity, pressure, feels_like} = main;
+		const iconurl = `https://openweathermap.org/img/w/${icon}.png`;
 
 		const iconResponse = await fetch(iconurl);
 		const cache = await caches.open(version);
 		cache.put(iconurl, iconResponse);
-
-		const object = Object.freeze({
-			main_weather, 
-			icon, 
-			description, 
-			temp, 
-			country, 
-			visibility, 
-			humidity, 
-			pressure, 
-			temp_max, 
-			clouds, 
-			coord, 
-			day, 
-			str_date, 
-			time
-		});
 
 		localStorage.setItem(`${name}`, url);
 		document.getElementById('weather-display-panel').style.display = "block";
