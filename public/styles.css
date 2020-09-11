@@ -4,7 +4,9 @@
 	font-family: Comfortaa, sans-serif;
 	box-sizing: border-box;
 }
-
+.center{
+	text-align: center;
+}
 body{
 	background: lightblue url("./assets/background.jpg") no-repeat;
 	background-size: cover;
@@ -75,6 +77,49 @@ header{
 	width: 100%;
 	color: #fff;
 }
+#history{
+	background-color: rgba(0, 0, 0, 0.3);
+	color: #fff;
+}
+#history-list{
+	list-style-type: none;
+}
+#history-list li{
+	display: flex;
+	padding: 8px 12px;
+	width: 100%;
+	border-bottom: 1px solid #ccc;
+}
+#history-list li:hover{
+	background-color: rgba(255, 255, 255, 0.3);
+}
+#history-list li p{
+	width: 90%;	
+}
+#history-list li button{
+	border: 0;
+	background: rgba(255, 255, 255, 0.3);
+	color: #fff;
+	width: 30px;
+	height: 30px;
+	padding: 4px;
+	border-radius: 50%;
+}
+#history-list li:hover #history-list li button{
+	display: initial;
+}
+footer {
+	background-color: #fff;
+	color: #000;
+	padding: 16px;
+}
+footer .icons {
+	padding-top: 30px;
+}
+.icons img{
+	height: 32px;
+}
+
 @media (min-width: 578px) {
 	#weather-display-panel > div {
 		width: 70%;

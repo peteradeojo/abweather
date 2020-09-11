@@ -1,12 +1,14 @@
-const CACHE_NAME = "ABWEATHER-V1";
+const CACHE_NAME = "ABWEATHER-V2";
 
 const urlsToCache = [
+	'/',
 	'/styles.css',
 	'/index.html',
 	'/assets/background.jpg',
 	'/assets/favicon.ico',
-	'/assets/index.js'
-	// 'https://fonts.googleapis.com/css2?family=Comfortaa'
+	'/assets/index.js',
+	'/assets/twitter.png',
+	'/assets/whatsapp.png'
 ];
 
 self.addEventListener('install', installer => {
@@ -18,10 +20,38 @@ self.addEventListener('install', installer => {
 	};
 
 	installer.waitUntil(done());
+	self.skipWaiting();
 });
 
 self.addEventListener('fetch', fetchEvent => {
-	
+	const url = fetchEvent.request.url;
+
+	console.log(`Fetching: ${url}`);
+
+	const getResponse = async (request) => {
+		let response = await caches.match(request);
+		if (response && response.status === 200) {
+			console.log('File in cache. Returning cached version');
+			return response;
+		}
+
+		try {
+			response = await fetch(request);
+			if (response && response.status === 404) {
+				return new Response({
+					status: 404
+				});
+			}
+		} catch (e) {
+			window.alert(e);
+		}
+
+		const clone = response.clone();
+		const cache = await caches.open(CACHE_NAME);
+		cache.put(url, clone);
+		return response;
+	};
+	fetchEvent.respondWith(getResponse(fetchEvent.request));
 });
 
 self.addEventListener('activate', activator => {
