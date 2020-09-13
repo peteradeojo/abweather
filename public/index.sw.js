@@ -10,10 +10,8 @@ const urlsToCache = [
 	'/assets/index.js',
 	'/assets/twitter.png',
 	'/assets/whatsapp.png',
-	'/assets/android-chrome-192x192.png',
 	'/android-chrome-256x256.png',
 	'/android-chrome-192x192.png',
-	
 ];
 
 self.addEventListener('install', installer => {
