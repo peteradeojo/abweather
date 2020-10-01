@@ -2,26 +2,42 @@
 const version = "ABWEATHER-V2";
 const appid = "85e7481d8cfba840c714f532c6a2f18f";
 
+const push = document.querySelector("#notifications");
+
 const getDay = (n) => {
 	let day;
-	switch (n){
-		case 0: day = "Sunday";break;
-		case 1: day = "Monday";break;
-		case 2: day = "Tuesday";break;
-		case 3: day = "Wednesday";break;
-		case 4: day = "Thursday";break;
-		case 5: day = "Friday";break;
-		case 6: day = "Saturday";break;
+	switch (n) {
+		case 0:
+			day = "Sunday";
+			break;
+		case 1:
+			day = "Monday";
+			break;
+		case 2:
+			day = "Tuesday";
+			break;
+		case 3:
+			day = "Wednesday";
+			break;
+		case 4:
+			day = "Thursday";
+			break;
+		case 5:
+			day = "Friday";
+			break;
+		case 6:
+			day = "Saturday";
+			break;
 	}
 
 	return day;
 }
 const jsUcfirst = (string) => {
-    return string.charAt(0).toUpperCase() + string.slice(1);
+	return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 const getTime = (hour, minute) => {
-	let meridian = hour > 11 ? "PM": "AM";
+	let meridian = hour > 11 ? "PM" : "AM";
 
 	if (hour > 12) {
 		hour = hour % 12;
@@ -38,18 +54,42 @@ const getTime = (hour, minute) => {
 const parseMonth = (n) => {
 	let month = "";
 	switch (n) {
-		case 0: month = "January";break;
-		case 1: month = "February";break;
-		case 2: month = "March";break;
-		case 3: month = "April";break;
-		case 4: month = "May";break;
-		case 5: month = "June";break;
-		case 6: month = "July";break;
-		case 7: month = "August";break;
-		case 8: month = "September";break;
-		case 9: month = "October";break;
-		case 10: month = "November";break;
-		case 11: month = "December";break;
+		case 0:
+			month = "January";
+			break;
+		case 1:
+			month = "February";
+			break;
+		case 2:
+			month = "March";
+			break;
+		case 3:
+			month = "April";
+			break;
+		case 4:
+			month = "May";
+			break;
+		case 5:
+			month = "June";
+			break;
+		case 6:
+			month = "July";
+			break;
+		case 7:
+			month = "August";
+			break;
+		case 8:
+			month = "September";
+			break;
+		case 9:
+			month = "October";
+			break;
+		case 10:
+			month = "November";
+			break;
+		case 11:
+			month = "December";
+			break;
 	}
 
 	return month;
@@ -68,7 +108,7 @@ let searchWeather = () => {
 
 let queryWeatherMap = async (callback, search) => {
 	try {
-		const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${search}&appid=${appid}&units=metric`);		
+		const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${search}&appid=${appid}&units=metric`);
 		const clone = response.clone();
 		const json = await response.json();
 
@@ -102,14 +142,27 @@ let processResponse = async (json, url) => {
 	const day = getDay(date.getDay());
 	const str_date = date.getUTCDate();
 	const time = getTime(date.getHours(), date.getMinutes());
-	
+
 	try {
-		const {weather, main, name, sys, visibility} = json;
-		const {country} = sys;
+		const {
+			weather,
+			main,
+			name,
+			sys,
+			visibility
+		} = json;
+		const {
+			country
+		} = sys;
 		const main_weather = weather[0].main;
 		const icon = weather[0].icon;
 		const description = weather[0].description;
-		const {temp, humidity, pressure, feels_like} = main;
+		const {
+			temp,
+			humidity,
+			pressure,
+			feels_like
+		} = main;
 		const iconurl = `https://openweathermap.org/img/w/${icon}.png`;
 
 		const iconResponse = await fetch(iconurl);
@@ -137,7 +190,7 @@ let processResponse = async (json, url) => {
 	} catch (e) {
 		alert("Invalid search parameters. Please try again");
 	}
- 
+
 }
 
 const removeSearch = (key) => {
@@ -162,15 +215,51 @@ const generateHistory = () => {
 			<button onclick='removeSearch("${key}"); this.parentElement.style.display = "none";'>&times;</button>
 		</li>`;
 	}
-	
+
 	document.getElementById('history-list').setAttribute('data-state', 'filled');
 	document.getElementById('history-list').innerHTML = lists;
 }
 
-window.addEventListener('load', () =>{
+const displayConfirmNotification = () => {
+	if ("serviceWorker" in navigator) {
+		let options = {
+			body: "You've successfully subscribed to our notification service",
+			icon: "./favicon-16x16.png",
+			image: "./favicon-16x16.png",
+			dir: "ltr",
+			tag: "confirm-notification",
+			remotify: true,
+			actions: [
+				{action: "confirm", title: "Okay", icon: "./favicon-16x16.png"},
+				{action: "cancel", title: "Unsubscribe", icon: "./favicon-16x16.png"}
+			]
+		}
+
+		navigator.serviceWorker.ready.then((swreg) => {
+			swreg.showNotification("You successfully subscribed (from SW!)", options);
+		});
+	}
+};
+
+const notifyMe = () => {
+	Notification.requestPermission((r) => {
+		console.log("user choice:", r);
+		if (r !== "granted") {
+			alert("Kindly enable notifications");
+		} else {
+			displayConfirmNotification();
+		}
+	});
+};
+
+window.addEventListener('load', () => {
 	autoLoadWeather();
 	generateHistory();
 	if (!navigator.onLine) {
 		document.getElementById('advanced-display').innerHTML = 'You are offline. Please go online to generate weather for your location';
 	}
 });
+
+if ("Notification" in window) {
+	push.addEventListener('click', notifyMe);
+}

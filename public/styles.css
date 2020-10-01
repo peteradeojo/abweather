@@ -1,102 +1,125 @@
-*{
+* {
 	margin: 0;
 	padding: 0;
 	font-family: Comfortaa, sans-serif;
 	box-sizing: border-box;
 }
-.center{
+
+.center {
 	text-align: center;
 }
-body{
+
+body {
 	background: lightblue url("./assets/background.jpg") no-repeat;
 	background-size: cover;
 	font-size: 14px;
 }
-.container{
+
+.container {
 	padding: 16px;
 	margin: auto;
 	overflow: hidden;
 	width: 90%;
 }
-.jumbo{
+
+.jumbo {
 	font-size: 3em;
 }
-.large{
+
+.large {
 	font-size: 2.4em;
 }
-.capitalize{
+
+.capitalize {
 	text-transform: capitalize;
 }
-header{
+
+header {
 	padding: 40px;
 	background: #000;
 	color: #fff;
 	font-size: 2em;
 }
 
-#weather-search-panel > div{
+#weather-search-panel>div {
 	display: flex;
 	align-items: center;
 	justify-content: center;
 }
-#weather-search-panel > div > form {
+
+#weather-search-panel>div>form {
 	width: 100%;
 	display: flex;
 }
-#weather-search-panel input, #weather-search-panel button{
+
+#weather-search-panel input,
+#weather-search-panel button {
 	padding: 8px 12px;
 	border: 0;
 }
-#weather-search-panel > div > form input{
+
+#weather-search-panel>div>form input {
 	border-radius: 6px 0 0 6px;
 	width: 70%;
 }
-#weather-search-panel > div > form button {
+
+#weather-search-panel>div>form button {
 	border-radius: 0 6px 6px 0;
 	width: 30%;
 }
-#weather-search-panel > div > form button:hover{
+
+#weather-search-panel>div>form button:hover {
 	background: rgba(0, 0, 0, 0.3);
 	color: #fff;
 }
-#main-display-pane{
+
+#main-display-pane {
 	background: #fff;
 	border-radius: 6px;
 	text-align: center;
 	margin-bottom: 30px;
 }
-#main-display-pane p{
+
+#main-display-pane p {
 	margin-bottom: 10px;
 }
-#advanced-display{
+
+#advanced-display {
 	background: rgba(0, 0, 0, 0.3);
 }
-#advanced-display p{
+
+#advanced-display p {
 	padding: 8px 12px;
 	border-bottom: 0.3px solid #ccc;
 	width: 100%;
 	color: #fff;
 }
-#history{
+
+#history {
 	background-color: rgba(0, 0, 0, 0.3);
 	color: #fff;
 }
-#history-list{
+
+#history-list {
 	list-style-type: none;
 }
-#history-list li{
+
+#history-list li {
 	display: flex;
 	padding: 8px 12px;
 	width: 100%;
 	border-bottom: 1px solid #ccc;
 }
-#history-list li:hover{
+
+#history-list li:hover {
 	background-color: rgba(255, 255, 255, 0.3);
 }
-#history-list li p{
-	width: 90%;	
+
+#history-list li p {
+	width: 90%;
 }
-#history-list li button{
+
+#history-list li button {
 	border: 0;
 	background: rgba(255, 255, 255, 0.3);
 	color: #fff;
@@ -105,27 +128,43 @@ header{
 	padding: 4px;
 	border-radius: 50%;
 }
-#history-list li:hover #history-list li button{
+
+#history-list li:hover #history-list li button {
 	display: initial;
 }
+
 footer {
 	background-color: #fff;
 	color: #000;
 	padding: 16px;
 }
+
 footer .icons {
 	padding-top: 30px;
 }
-.icons a{
+
+.icons a {
 	text-decoration: none;
 	color: inherit;
 }
-.icons img{
+
+.icons img {
 	height: 32px;
 }
 
+#notifications {
+	color: #fff;
+	background-color: rgb(221, 25, 25);
+	padding: 6px;
+	border-radius: 6px;
+}
+
+#notifications:hover {
+	background-color: rgba(221, 25, 25, 0.8);
+}
+
 @media (min-width: 578px) {
-	#weather-display-panel > div {
+	#weather-display-panel>div {
 		width: 70%;
 	}
 }
