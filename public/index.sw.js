@@ -71,3 +71,32 @@ self.addEventListener('activate', activator => {
 
 	activator.waitUntil(done());
 });
+
+self.addEventListener("notificationclick", (event) => {
+	let notification = event.notification;
+	let action = event.action;
+
+	console.log(notification);
+
+	if (action === "confirm") {
+		console.log('Confirm was chosen');
+		notification.close();
+	} else {
+		console.log(action);
+		notification.close();
+	}
+});
+
+let syncAttendees = () => {
+	return update({ url: `../` })
+    	.then(refresh)
+    	.then(() => self.registration.showNotification(`Sync successful`))
+}
+
+self.addEventListener('sync', function(event) {
+	console.log("sync event", event);
+    if (event.tag === 'syncAttendees') {
+        event.waitUntil(syncAttendees()); // sending sync request
+    }
+});
+

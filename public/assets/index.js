@@ -260,6 +260,17 @@ window.addEventListener('load', () => {
 	}
 });
 
+const registerBackgroundSync = () => {
+	if (!navigator.serviceWorker){
+			return console.error("Service Worker not supported")
+	}
+
+	navigator.serviceWorker.ready
+	.then(registration => registration.sync.register('syncAttendees'))
+	.then(() => console.log("Registered background sync"))
+	.catch(err => console.error("Error registering background sync", err))
+}
+
 if ("Notification" in window) {
 	push.addEventListener('click', notifyMe);
 }
