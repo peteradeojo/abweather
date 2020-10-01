@@ -260,6 +260,13 @@ window.addEventListener('load', () => {
 	}
 });
 
+function registerNotification() {
+	Notification.requestPermission(permission => {
+		if (permission === 'granted'){ registerBackgroundSync() }
+		else console.error("Permission was not granted.")
+	})
+}
+
 const registerBackgroundSync = () => {
 	if (!navigator.serviceWorker){
 			return console.error("Service Worker not supported")

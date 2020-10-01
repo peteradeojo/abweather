@@ -152,14 +152,14 @@ footer .icons {
 	height: 32px;
 }
 
-#notifications {
+.notifications {
 	color: #fff;
 	background-color: rgb(221, 25, 25);
 	padding: 6px;
 	border-radius: 6px;
 }
 
-#notifications:hover {
+.notifications:hover {
 	background-color: rgba(221, 25, 25, 0.8);
 }
 

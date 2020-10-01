@@ -25,10 +25,26 @@ self.addEventListener('install', installer => {
 	installer.waitUntil(done());
 });
 
+let cache = async (request, response) => {
+	if (response.type === "error" || response.type === "opaque") {
+		return Promise.resolve(); // do not put in cache network errors
+	}
+
+	return caches.open(CACHE_NAME).then(cache => cache.put(request, response.clone()));
+};
+
+let update = async (request) => {
+	return fetch(request.url).then(
+		response =>
+		cache(request, response) // we can put response in cache
+		// .then(() => response) // resolve promise with the Response object
+	);
+};
+
 self.addEventListener('fetch', fetchEvent => {
 	const url = fetchEvent.request.url;
 
-	console.log(`Fetching: ${url}`);
+	// console.log(`Fetching: ${url}`);
 
 	const getResponse = async (request) => {
 		let response = await caches.match(request);
@@ -53,7 +69,12 @@ self.addEventListener('fetch', fetchEvent => {
 		cache.put(url, clone);
 		return response;
 	};
-	fetchEvent.respondWith(getResponse(fetchEvent.request));
+	// fetchEvent.respondWith(getResponse(fetchEvent.request));
+
+	fetchEvent.respondWith(caches.match(fetchEvent.request));
+	fetchEvent.waitUntil(update(fetchEvent.request)
+	// .then(refresh)
+	);
 });
 
 self.addEventListener('activate', activator => {
@@ -87,16 +108,15 @@ self.addEventListener("notificationclick", (event) => {
 	}
 });
 
-let syncAttendees = () => {
-	return update({ url: `../` })
-    	.then(refresh)
-    	.then(() => self.registration.showNotification(`Sync successful`))
+let syncAttendees = async () => {
+	return update({
+			url: `../`
+		}).then(() => self.registration.showNotification(`Sync successful`))
 }
 
-self.addEventListener('sync', function(event) {
+self.addEventListener('sync', function (event) {
 	console.log("sync event", event);
-    if (event.tag === 'syncAttendees') {
-        event.waitUntil(syncAttendees()); // sending sync request
-    }
+	if (event.tag === 'syncAttendees') {
+		event.waitUntil(syncAttendees()); // sending sync request
+	}
 });
-
