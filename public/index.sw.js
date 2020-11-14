@@ -71,10 +71,9 @@ self.addEventListener('fetch', fetchEvent => {
 	};
 	// fetchEvent.respondWith(getResponse(fetchEvent.request));
 
-	fetchEvent.respondWith(caches.match(fetchEvent.request));
-	fetchEvent.waitUntil(update(fetchEvent.request)
-	// .then(refresh)
-	);
+	fetchEvent.respondWith(getResponse(fetchEvent.request));
+	fetchEvent.waitUntil(update(fetchEvent.request)); // .then(refresh)
+
 });
 
 self.addEventListener('activate', activator => {
@@ -91,32 +90,4 @@ self.addEventListener('activate', activator => {
 	};
 
 	activator.waitUntil(done());
-});
-
-self.addEventListener("notificationclick", (event) => {
-	let notification = event.notification;
-	let action = event.action;
-
-	console.log(notification);
-
-	if (action === "confirm") {
-		console.log('Confirm was chosen');
-		notification.close();
-	} else {
-		console.log(action);
-		notification.close();
-	}
-});
-
-let syncAttendees = async () => {
-	return update({
-			url: `../`
-		}).then(() => self.registration.showNotification(`Sync successful`))
-}
-
-self.addEventListener('sync', function (event) {
-	console.log("sync event", event);
-	if (event.tag === 'syncAttendees') {
-		event.waitUntil(syncAttendees()); // sending sync request
-	}
 });
