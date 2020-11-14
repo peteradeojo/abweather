@@ -132,7 +132,8 @@ let autoLoadWeather = () => {
 
       const cache = await caches.open(version);
       cache.put(clone.url, clone);
-      processResponse(json, clone.url);
+			processResponse(json, clone.url);
+			generateHistory();
     });
   }
 };
@@ -177,11 +178,10 @@ let processResponse = async (json, url) => {
 		<p>Visibility: ${visibility}metres</p>
 		`;
 
+		generateHistory();
   } catch (e) {
     alert("Invalid search parameters. Please try again");
 	}
-	
-	generateHistory();
 };
 
 const removeSearch = (key) => {
@@ -235,8 +235,8 @@ const displayConfirmNotification = () => {
 window.addEventListener("load", () => {
   autoLoadWeather();
   generateHistory();
-  if (!navigator.onLine) {
-    document.getElementById("advanced-display").innerHTML =
-      "You are offline. Please go online to generate weather for your location";
-  }
+  // if (!navigator.onLine) {
+  //   document.getElementById("advanced-display").innerHTML =
+  //     "You are offline. Please go online to generate weather for your location";
+  // }
 });
